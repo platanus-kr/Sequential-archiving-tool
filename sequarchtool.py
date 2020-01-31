@@ -32,10 +32,24 @@ def directory_zip(src_fullpath, dest_filename):
 				zip_.write(fullpath, relpath, zipfile.ZIP_DEFLATED)
 		zip_.close()
 
+
+try:
+	os.path.isdir(cfg.destination_path)
+except:
+	logging_bucket(" >> Not found destination path.")
+	exit()
+
+try:
+	os.path.isdir(cfg.origin_path)
+except:
+	logging_bucket(" >> Not found origin path.")
+	exit()
+
+
 try:
 	join_path_dsstore=os.path.join(cfg.origin_path,".DS_Store")
 	os.remove(join_path_dsstore)
-	print(".DS_Store removed.")
+	logging_bucket(" >> .DS_Store removed.")
 except:
 	pass
 
@@ -47,9 +61,10 @@ for dirname in directory_list(cfg.origin_path):
 	join_fullpath_path=os.path.join(cfg.origin_path, dirname)
 	join_fullpath_with_filename=os.path.join(cfg.origin_path, dirname+".zip")
 	join_destination_fullpath_with_filename=os.path.join(cfg.destination_path, dirname+".zip")
-	logging_bucket(">> Archiving "+dirname+".")
+	logging_bucket(" >> Archiving "+dirname+".")
 	directory_zip(join_fullpath_path, join_fullpath_with_filename)
-	logging_bucket(">> Moving "+dirname+".zip. ")
+	logging_bucket(" >> Moving "+dirname+".zip. ")
 	shutil.move(join_fullpath_with_filename, join_destination_fullpath_with_filename)
-	logging_bucket(">> done "+dirname+".")
+	logging_bucket(" >> Archiving and Moving OK "+dirname+".")
 
+logging_bucket(" >> Done Archiving.")
