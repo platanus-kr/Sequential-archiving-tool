@@ -16,8 +16,6 @@ def logging_bucket(messages):
 	logging.basicConfig(filename='sequarchtool.log', format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=logging.INFO)
 	logging.info('%s', messages)
 	print(str(datetime.now())+messages)
-    # logging_bucket(" >> Window opening..")	
-
 
 def directory_list(path):
     res = [f for f in listdir(path) if isdir(path)]
@@ -71,22 +69,29 @@ if __name__ == "__main__":
 
 	for dirname in directory_list(cfg.origin_path):
 		join_fullpath_path=os.path.join(cfg.origin_path, dirname)
+		# example) "/Volume/User/Catalog" + "Potrait" = "/Volume/User/Catalog/Portrait"
 		join_fullpath_with_filename=os.path.join(cfg.origin_path, dirname+".zip")
+		# exanple) "/Volume/User/Catalog" + "Portrait" + ".zip" = "/Volume/User/Catalog/Portrait.zip"
 		join_destination_fullpath_with_filename=os.path.join(cfg.destination_path, dirname+".zip")
+		# exanple) "/Volume/ExternalNAS/CatalogBackup" + "Portrait" + ".zip" = "/Volume/ExternalNAS/CatalogBackup/Portrait.zip"
+
+		# Create zip file
 		logging_bucket(" >> Archiving "+dirname+".")
 		arch_tic=time.process_time()
 		directory_zip(join_fullpath_path, join_fullpath_with_filename)
 		arch_toc=time.process_time()
-		# "{0:.2f}".format(a)
 		arch_proctime=str("{0:.2f}".format(arch_toc-arch_tic))
 		logging_bucket(" >> Archiving time : "+str(arch_proctime)+"s.")	
 		logging_bucket(" >> Archived file size :"+file_size(join_fullpath_with_filename)+".")
+
+		# Transfer to remote point
 		logging_bucket(" >> Moving "+dirname+".zip. ")
 		move_tic=time.process_time()
 		shutil.move(join_fullpath_with_filename, join_destination_fullpath_with_filename)
 		move_toc=time.process_time()
 		move_proctime=str("{0:.2f}".format(move_toc-move_tic))
-		logging_bucket(" >> Archiving and Moving OK "+dirname+".")
 		logging_bucket(" >> File trasfer time: "+str(move_proctime)+"s.")	
+
+		logging_bucket(" >> Archiving and Moving OK "+dirname+".")
 
 	logging_bucket(" >> Done Archiving.")
