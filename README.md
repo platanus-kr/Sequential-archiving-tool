@@ -1,4 +1,14 @@
 #  Sequential archiving tool
+- - -
+원본 저장소 : [git.canxan.com](https://git.canxan.com/platanus/sequential-archiving-tool)
+
+##  실행
+sequarchtool-config.py 수정 후   
+```
+$ python sequarchtool.py
+```
+Python 3.3이상 실행가능   
+OS 관계없음 (Windows, macOS, Linux 가능)
 
 ##  목표
 1.  원본내의 폴더를 탐색합니다
