@@ -1,6 +1,6 @@
 #  Sequential archiving tool
 - - -
-원본 저장소 : [git.canxan.com](https://git.canxan.com/platanus/sequential-archiving-tool)
+원본 : [git.canxan.com](https://git.canxan.com/platanus/sequential-archiving-tool)
 
 ##  실행
 sequarchtool-config.py 수정 후   
